@@ -10,7 +10,7 @@ module.exports = {
   password: process.env.DB_PASSWORD,
   logging: true,
   database: process.env.DB_SCHEMA,
-  entities: [__dirname + "/src/entities/*.{ts,js}"],
-  migrations: [__dirname + "/src/migrations/*.{ts,js}"],
-  subscribers: [__dirname + "/src/subscribers/*.{ts,js}"]
+  entities: [join(__dirname, "dist/entities", "*.{ts,js}")],
+  migrations: [join(__dirname, "distmigrations", "*.{ts,js}")],
+  subscribers: [join(__dirname, "dist/subscribers", "*.{ts,js}")]
 };
