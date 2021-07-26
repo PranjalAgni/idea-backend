@@ -8,6 +8,7 @@
     "clean": "rimraf ./dist",
     "build": "npm run clean && tsc",
     "start": "cross-env NODE_ENV=production npm run build && node dist/server.js",
+    "prestart:dev": "npm run build",
     "start:dev": "cross-env DEBUG=server* nodemon",
     "lint": "eslint . --ext .ts"
   },
