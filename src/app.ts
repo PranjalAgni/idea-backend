@@ -41,8 +41,6 @@ const initalizeApp = async (): Promise<express.Application> => {
 
   routes.push(new AuthRoutes(app), new UserRoutes(app));
 
-  CommonRoutesConfig.applyErrorHandleMiddlewares(app);
-
   app.get("/", (_req: express.Request, res: express.Response) => {
     res
       .status(200)
@@ -52,6 +50,8 @@ const initalizeApp = async (): Promise<express.Application> => {
   routes.forEach((route: CommonRoutesConfig) => {
     debugLog(`Routes configured for ${route.getName()}`);
   });
+
+  CommonRoutesConfig.applyErrorHandleMiddlewares(app);
 
   return app;
 };
