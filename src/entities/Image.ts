@@ -1,26 +1,26 @@
 import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  PrimaryGeneratedColumn
+	BaseEntity,
+	Column,
+	CreateDateColumn,
+	DeleteDateColumn,
+	Entity,
+	PrimaryGeneratedColumn
 } from "typeorm";
 
 @Entity()
 export class Image extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  imageId: number;
+	@PrimaryGeneratedColumn()
+	imageId: number;
 
-  @Column("varchar", { nullable: false })
-  url: string;
+	@Column("varchar", { nullable: false })
+	url: string;
 
-  @CreateDateColumn({ type: "timestamp" })
-  createdAt: Date;
+	@CreateDateColumn({ type: "timestamp" })
+	createdAt: Date;
 
-  @CreateDateColumn({ type: "timestamp" })
-  updatedAt: Date;
+	@CreateDateColumn({ type: "timestamp" })
+	updatedAt: Date;
 
-  @DeleteDateColumn()
-  deletedAt: Date;
+	@DeleteDateColumn()
+	deletedAt: Date;
 }

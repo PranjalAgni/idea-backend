@@ -11,7 +11,9 @@
     "start": "cross-env NODE_ENV=production npm run build && node dist/server.js",
     "prestart:dev": "npm run build",
     "start:dev": "cross-env DEBUG=server* nodemon",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint --fix --ext .ts ."
+
   },
   "_moduleAliases": {
     "@auth": "dist/modules/auth",

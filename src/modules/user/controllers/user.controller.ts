@@ -1,8 +1,8 @@
 import {
-  CreateGithubUserDto,
-  CreateUserDto,
-  ReadUserByIdStruct,
-  ReadUserStruct
+	CreateGithubUserDto,
+	CreateUserDto,
+	ReadUserByIdStruct,
+	ReadUserStruct
 } from "@user/dtos/user.dto";
 import userService from "@user/services/user.service";
 import { formatResponse } from "@utils/express";
@@ -17,77 +17,77 @@ import { create } from "superstruct";
 const debugLog: debug.IDebugger = debug("server:user-controller");
 
 class UserController {
-  private static instance: UserController;
+	private static instance: UserController;
 
-  static getInstance(): UserController {
-    if (!UserController.instance) {
-      UserController.instance = new UserController();
-    }
+	static getInstance(): UserController {
+		if (!UserController.instance) {
+			UserController.instance = new UserController();
+		}
 
-    return UserController.instance;
-  }
+		return UserController.instance;
+	}
 
-  async createUser(req: Request, res: Response, next: NextFunction) {
-    try {
-      const data = req.body as CreateUserDto;
-      const user = await userService.create(data);
-      debugLog(user);
-      addSessionToken(res, user);
-      return formatResponse({
-        res,
-        result: { done: true }
-      });
-    } catch (ex) {
-      logger.error(ex.message);
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR);
-      return next(createError(StatusCodes.INTERNAL_SERVER_ERROR, ex.message));
-    }
-  }
+	async createUser(req: Request, res: Response, next: NextFunction) {
+		try {
+			const data = req.body as CreateUserDto;
+			const user = await userService.create(data);
+			debugLog(user);
+			addSessionToken(res, user);
+			return formatResponse({
+				res,
+				result: { done: true }
+			});
+		} catch (ex) {
+			logger.error(ex.message);
+			res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+			return next(createError(StatusCodes.INTERNAL_SERVER_ERROR, ex.message));
+		}
+	}
 
-  async getAllUsers(req: Request, res: Response, next: NextFunction) {
-    try {
-      const data = create(req.query, ReadUserStruct);
-      const userList = await userService.getAllUsers(data);
-      return formatResponse({
-        res,
-        result: userList
-      });
-    } catch (ex) {
-      logger.error(ex.message);
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR);
-      return next(createError(StatusCodes.INTERNAL_SERVER_ERROR, ex.message));
-    }
-  }
+	async getAllUsers(req: Request, res: Response, next: NextFunction) {
+		try {
+			const data = create(req.query, ReadUserStruct);
+			const userList = await userService.getAllUsers(data);
+			return formatResponse({
+				res,
+				result: userList
+			});
+		} catch (ex) {
+			logger.error(ex.message);
+			res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+			return next(createError(StatusCodes.INTERNAL_SERVER_ERROR, ex.message));
+		}
+	}
 
-  async getUserById(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { userId } = create(req.params, ReadUserByIdStruct);
+	async getUserById(req: Request, res: Response, next: NextFunction) {
+		try {
+			const { userId } = create(req.params, ReadUserByIdStruct);
 
-      const user = await userService.findUserById(userId);
-      return formatResponse({
-        res,
-        result: user
-      });
-    } catch (ex) {
-      logger.error(ex.message);
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR);
-      return next(createError(StatusCodes.INTERNAL_SERVER_ERROR, ex.message));
-    }
-  }
+			const user = await userService.findUserById(userId);
+			return formatResponse({
+				res,
+				result: user
+			});
+		} catch (ex) {
+			logger.error(ex.message);
+			res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+			return next(createError(StatusCodes.INTERNAL_SERVER_ERROR, ex.message));
+		}
+	}
 
-  async createGithubUser(req: Request, res: Response, next: NextFunction) {
-    try {
-      const githubData = req.user as CreateGithubUserDto;
-      debugLog(githubData);
-      const githubUser = await userService.createGithubUser(githubData);
-      await addSessionToken(res, githubUser.user);
-      return formatResponse({ res, result: githubUser });
-    } catch (ex) {
-      logger.error(ex.message);
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR);
-      return next(createError(StatusCodes.INTERNAL_SERVER_ERROR, ex.message));
-    }
-  }
+	async createGithubUser(req: Request, res: Response, next: NextFunction) {
+		try {
+			const githubData = req.user as CreateGithubUserDto;
+			debugLog(githubData);
+			const githubUser = await userService.createGithubUser(githubData);
+			await addSessionToken(res, githubUser.user);
+			return formatResponse({ res, result: githubUser });
+		} catch (ex) {
+			logger.error(ex.message);
+			res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+			return next(createError(StatusCodes.INTERNAL_SERVER_ERROR, ex.message));
+		}
+	}
 }
 
 export default UserController.getInstance();
