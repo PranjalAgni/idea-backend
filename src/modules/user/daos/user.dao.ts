@@ -26,6 +26,14 @@ class UserDao {
 		});
 	}
 
+	async findByUsername(username: string) {
+		return await getRepository(User)
+			.createQueryBuilder("user")
+			.addSelect("password")
+			.where("user.username = :username", { username })
+			.getOne();
+	}
+
 	async getUsersOrderedByPopularity(page: number, limit: number) {
 		const offset = (page - 1) * limit;
 

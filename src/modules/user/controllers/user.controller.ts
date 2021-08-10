@@ -2,12 +2,12 @@ import {
 	CreateGithubUserDto,
 	CreateUserDto,
 	ReadUserByIdStruct,
-	ReadUserStruct
+	ReadUserStruct,
+	SigninUserDto
 } from "@user/dtos/user.dto";
 import userService from "@user/services/user.service";
 import { formatResponse } from "@utils/express";
 import logger from "@utils/logger";
-import { addSessionToken } from "@utils/session";
 import debug from "debug";
 import { NextFunction, Request, Response } from "express";
 import createError from "http-errors";
@@ -32,10 +32,41 @@ class UserController {
 			const data = req.body as CreateUserDto;
 			const user = await userService.create(data);
 			debugLog(user);
-			addSessionToken(res, user);
+			const sessionId = await userService.createUserSession(user);
+			res.setHeader("authorization", sessionId);
 			return formatResponse({
 				res,
 				result: { done: true }
+			});
+		} catch (ex) {
+			logger.error(ex.message);
+			res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+			return next(createError(StatusCodes.INTERNAL_SERVER_ERROR, ex.message));
+		}
+	}
+
+	async signinUser(req: Request, res: Response, next: NextFunction) {
+		try {
+			const data = req.body as SigninUserDto;
+			const verifiedUser = await userService.verifyUserPassword(
+				data.username,
+				data.password
+			);
+
+			if (!verifiedUser) {
+				return formatResponse({
+					res,
+					result: { verified: false },
+					status: 403
+				});
+			}
+
+			// TODO: check in DB first if sessionID exist, then only create new user session
+			const sessionId = await userService.createUserSession(verifiedUser);
+			res.setHeader("authorization", sessionId);
+			return formatResponse({
+				res,
+				result: { verified: true }
 			});
 		} catch (ex) {
 			logger.error(ex.message);
@@ -68,20 +99,6 @@ class UserController {
 				res,
 				result: user
 			});
-		} catch (ex) {
-			logger.error(ex.message);
-			res.status(StatusCodes.INTERNAL_SERVER_ERROR);
-			return next(createError(StatusCodes.INTERNAL_SERVER_ERROR, ex.message));
-		}
-	}
-
-	async createGithubUser(req: Request, res: Response, next: NextFunction) {
-		try {
-			const githubData = req.user as CreateGithubUserDto;
-			debugLog(githubData);
-			const githubUser = await userService.createGithubUser(githubData);
-			await addSessionToken(res, githubUser.user);
-			return formatResponse({ res, result: githubUser });
 		} catch (ex) {
 			logger.error(ex.message);
 			res.status(StatusCodes.INTERNAL_SERVER_ERROR);

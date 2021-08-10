@@ -8,7 +8,7 @@ import {
 	ReadUserDto
 } from "@user/dtos/user.dto";
 import logger from "@utils/logger";
-import { hashPassword } from "@utils/password";
+import { comparePassword, hashPassword } from "@utils/password";
 
 class UserService {
 	private static instance: UserService;
@@ -24,6 +24,24 @@ class UserService {
 		const user = userData as User;
 		user.password = await hashPassword(user.password);
 		return await userDao.create(user);
+	}
+
+	async verifyUserPassword(
+		username: string,
+		password: string
+	): Promise<User | null> {
+		const user = await userDao.findByUsername(username);
+		if (!user) {
+			logger.info(`User does not exist with ${username}`);
+			return null;
+		}
+		if (!comparePassword(user.password, password)) {
+			logger.info("Wrong password provided");
+			return null;
+		}
+
+		logger.info(`User verified ${username}`);
+		return user;
 	}
 
 	async getAllUsers(userData: ReadUserDto) {

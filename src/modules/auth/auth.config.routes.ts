@@ -2,6 +2,7 @@ import { CommonRoutesConfig } from "@common/common.routes.config";
 import userController from "@user/controllers/user.controller";
 import debug from "debug";
 import express from "express";
+import userMiddleware from "@user/middlewares/user.middleware";
 import passport from "./passport";
 
 const debugLog: debug.IDebugger = debug("server:auth-routes");
@@ -14,11 +15,13 @@ export class AuthRoutes extends CommonRoutesConfig {
 	configureRoutes(): express.Application {
 		this.app.get("/auth/github", passport.authenticate("github"));
 
-		this.app.get(
-			"/auth/github/callback",
-			passport.authenticate("github"),
-			userController.createGithubUser
-		);
+		this.app
+			.route("/auth/signup")
+			.post([userMiddleware.validateCreateUserBody, userController.createUser]);
+
+		this.app
+			.route("/auth/signin")
+			.post([userMiddleware.validateSigninUserBody, userController.signinUser]);
 
 		return this.app;
 	}

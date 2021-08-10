@@ -19,6 +19,11 @@ export const CreateUserStruct = object({
 	twitter: optional(string())
 });
 
+export const SigninUserStruct = object({
+	username: size(string(), 3, 12),
+	password: string()
+});
+
 export const ReadUserStruct = object({
 	sortBy: defaulted(string(), "popular"),
 	page: defaulted(
@@ -47,3 +52,4 @@ export type CreateUserDto = Infer<typeof CreateUserStruct>;
 export type ReadUserDto = Infer<typeof ReadUserStruct>;
 export type ReadUserByIdDto = Infer<typeof ReadUserByIdStruct>;
 export type CreateGithubUserDto = Infer<typeof CreateGithubUser>;
+export type SigninUserDto = Infer<typeof SigninUserStruct>;

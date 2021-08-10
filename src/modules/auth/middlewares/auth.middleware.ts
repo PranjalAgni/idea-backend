@@ -1,7 +1,7 @@
 import userService from "@user/services/user.service";
-import { userNotAuthenticated } from "@utils/express";
 import logger from "@utils/logger";
 import { NextFunction, Request, Response } from "express";
+import httpErrors from "../../common/exceptions/HttpErrors";
 
 class AuthMiddleware {
 	private static instance: AuthMiddleware;
@@ -23,7 +23,7 @@ class AuthMiddleware {
 			}
 
 			if (!token) {
-				return userNotAuthenticated(res, next);
+				return httpErrors.userNotAuthenticated(res, next);
 			}
 
 			logger.info(`Extracted token: ${token}`);
@@ -32,7 +32,7 @@ class AuthMiddleware {
 
 			if (!user) {
 				logger.error("No user found");
-				return userNotAuthenticated(res, next);
+				return httpErrors.userNotAuthenticated(res, next);
 			}
 
 			logger.info("User fetched, attaching it to request object");
@@ -40,7 +40,7 @@ class AuthMiddleware {
 			return next();
 		} catch (error) {
 			logger.error(error.message);
-			return userNotAuthenticated(res, next);
+			return httpErrors.userNotAuthenticated(res, next);
 		}
 	}
 }
