@@ -1,5 +1,4 @@
 import { AuthRoutes } from "@auth/auth.config.routes";
-import passport from "@auth/passport";
 import { CommonRoutesConfig } from "@common/common.routes.config";
 import { UserRoutes } from "@user/user.config.routes";
 import logger, { loggerStreamWrite } from "@utils/logger";
@@ -18,7 +17,7 @@ const initalizeApp = async (): Promise<express.Application> => {
 
 	const db = await createConnection();
 	debugLog("DB connected");
-	await db.synchronize();
+	// await db.synchronize();
 	debugLog("DB synced");
 	logger.info("DB connected");
 
@@ -37,7 +36,6 @@ const initalizeApp = async (): Promise<express.Application> => {
 			}
 		})
 	);
-	app.use(passport.initialize());
 
 	routes.push(new AuthRoutes(app), new UserRoutes(app));
 

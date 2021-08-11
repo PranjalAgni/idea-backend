@@ -1,5 +1,4 @@
 import {
-	CreateGithubUserDto,
 	CreateUserDto,
 	ReadUserByIdStruct,
 	ReadUserStruct,
@@ -36,7 +35,7 @@ class UserController {
 			res.setHeader("authorization", sessionId);
 			return formatResponse({
 				res,
-				result: { done: true }
+				result: { loggedIn: true }
 			});
 		} catch (ex) {
 			logger.error(ex.message);
@@ -56,7 +55,7 @@ class UserController {
 			if (!verifiedUser) {
 				return formatResponse({
 					res,
-					result: { verified: false },
+					result: { loggedIn: false },
 					status: 403
 				});
 			}
@@ -66,7 +65,7 @@ class UserController {
 			res.setHeader("authorization", sessionId);
 			return formatResponse({
 				res,
-				result: { verified: true }
+				result: { loggedIn: true }
 			});
 		} catch (ex) {
 			logger.error(ex.message);

@@ -1,5 +1,4 @@
 import { CommonRoutesConfig } from "@common/common.routes.config";
-import authMiddleware from "@auth/middlewares/auth.middleware";
 import userController from "@user/controllers/user.controller";
 import userMiddleware from "@user/middlewares/user.middleware";
 import express from "express";
