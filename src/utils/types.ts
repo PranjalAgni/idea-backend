@@ -1,4 +1,8 @@
 import { Response } from "express";
+import { define } from "superstruct";
+import isEmail from "is-email";
+
+export const Email = define("Email", isEmail);
 
 export type ResponseObject = {
 	res: Response;

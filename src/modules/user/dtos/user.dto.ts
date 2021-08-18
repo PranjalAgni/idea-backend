@@ -8,9 +8,10 @@ import {
 	size,
 	string
 } from "superstruct";
+import { Email } from "@utils/types";
 
 export const CreateUserStruct = object({
-	username: size(string(), 3, 12),
+	username: Email,
 	password: string(),
 	bio: size(string(), 1, 1000),
 	github: string(),

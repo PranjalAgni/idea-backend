@@ -13,7 +13,6 @@
     "start:dev": "cross-env DEBUG=server* nodemon",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint --fix --ext .ts ."
-
   },
   "_moduleAliases": {
     "@auth": "dist/modules/auth",
@@ -71,6 +70,7 @@
     "helmet": "^4.4.1",
     "http-errors": "^1.8.0",
     "http-status-codes": "^2.1.4",
+    "is-email": "^1.0.1",
     "module-alias": "^2.2.2",
     "morgan": "^1.10.0",
     "passport": "^0.4.1",

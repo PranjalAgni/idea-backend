@@ -3,3 +3,5 @@ declare namespace Express {
 		userId?: number;
 	}
 }
+
+declare module "is-email";
