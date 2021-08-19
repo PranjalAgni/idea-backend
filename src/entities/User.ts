@@ -17,51 +17,57 @@ export class User extends BaseEntity {
 
 	@Column({
 		unique: true,
-		nullable: false
+		nullable: false,
+		type: "text"
 	})
 	username: string;
 
 	@Column({
 		nullable: true,
-		select: false
+		select: false,
+		type: "text"
 	})
 	password: string;
+
+	@Column({
+		nullable: true,
+		type: "boolean",
+		name: "is_verified"
+	})
+	isVerified: boolean;
+
+	@Column({
+		nullable: true,
+		type: "text",
+		name: "first_name"
+	})
+	firstName: string;
+
+	@Column({
+		nullable: true,
+		type: "text",
+		name: "last_name"
+	})
+	lastName: string;
+
+	@Column({
+		nullable: true,
+		type: "date",
+		name: "birth_date"
+	})
+	birthDate: Date;
+
+	@Column({
+		nullable: true,
+		type: "char",
+		length: 1
+	})
+	gender: string;
 
 	@OneToOne(() => Image, { nullable: true, cascade: true })
 	@JoinColumn({ name: "avatar" })
 	@Column({ nullable: true })
 	avatar: Image;
-
-	@Column({
-		type: "text",
-		nullable: false
-	})
-	bio: string;
-
-	@Column({
-		nullable: true
-	})
-	linkedin: string;
-
-	@Column({
-		nullable: true
-	})
-	twitter: string;
-
-	@Column({
-		nullable: true
-	})
-	github: string;
-
-	@Column({
-		nullable: true
-	})
-	youtube: string;
-
-	@Column({
-		nullable: true
-	})
-	facebook: string;
 
 	@CreateDateColumn({ type: "timestamp" })
 	createdAt: Date;

@@ -1,27 +1,26 @@
+import { Email } from "@utils/types";
 import {
 	coerce,
+	date,
 	defaulted,
 	Infer,
 	number,
 	object,
-	optional,
 	size,
 	string
 } from "superstruct";
-import { Email } from "@utils/types";
 
 export const CreateUserStruct = object({
 	username: Email,
-	password: string(),
-	bio: size(string(), 1, 1000),
-	github: string(),
-	youtube: optional(string()),
-	linkedin: optional(string()),
-	twitter: optional(string())
+	password: size(string(), 6),
+	firstName: string(),
+	lastName: string(),
+	birthDate: date(),
+	gender: string()
 });
 
 export const SigninUserStruct = object({
-	username: size(string(), 3, 12),
+	username: Email,
 	password: string()
 });
 

@@ -48,7 +48,7 @@ class UserController {
 		try {
 			const data = req.body as SigninUserDto;
 			const verifiedUser = await userService.verifyUserPassword(
-				data.username,
+				data.username as string,
 				data.password
 			);
 

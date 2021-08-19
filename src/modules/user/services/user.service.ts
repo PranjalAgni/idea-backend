@@ -74,46 +74,6 @@ class UserService {
 		const authToken = await userDao.createUserAuthToken(user);
 		return authToken.sessionId;
 	}
-
-	async createGithubUser({
-		id,
-		accessToken,
-		refreshToken,
-		username,
-		_json
-	}: CreateGithubUserDto) {
-		const profileJSON = _json;
-
-		// check if this github user, has already signed up
-		const githubUser = await userDao.getGithubUserById(parseInt(id));
-
-		if (githubUser) return githubUser;
-
-		// this is a new user, so add it to DB
-		logger.info("This is a new Github user, creating a new user now");
-
-		const avatar = {
-			url: profileJSON.avatar_url as string
-		} as Image;
-
-		const userData = {
-			username,
-			bio: profileJSON.bio as string,
-			avatar
-		} as User;
-
-		// create a User
-		const user = await userDao.create(userData);
-
-		const githubUserData = {
-			githubId: parseInt(id),
-			accessToken,
-			refreshToken,
-			user
-		} as UserGithub;
-
-		return await userDao.createGithubUser(githubUserData);
-	}
 }
 
 export default UserService.getInstance();
