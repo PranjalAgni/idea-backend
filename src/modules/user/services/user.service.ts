@@ -1,12 +1,6 @@
-import { Image } from "@entities/Image";
 import { User } from "@entities/User";
-import { UserGithub } from "@entities/UserGithub";
 import userDao from "@user/daos/user.dao";
-import {
-	CreateGithubUserDto,
-	CreateUserDto,
-	ReadUserDto
-} from "@user/dtos/user.dto";
+import { CreateUserDto, ReadUserDto } from "@user/dtos/user.dto";
 import logger from "@utils/logger";
 import { comparePassword, hashPassword } from "@utils/password";
 
