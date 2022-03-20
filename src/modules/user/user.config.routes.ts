@@ -5,7 +5,7 @@ import express from "express";
 
 export class UserRoutes extends CommonRoutesConfig {
 	constructor(app: express.Application) {
-		super(app, "UserRoutes");
+		super(app, UserRoutes.name);
 	}
 
 	configureRoutes(): express.Application {

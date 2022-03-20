@@ -17,7 +17,6 @@ const debugLog: debug.IDebugger = debug("server:user-controller");
 
 class UserController {
 	private static instance: UserController;
-
 	static getInstance(): UserController {
 		if (!UserController.instance) {
 			UserController.instance = new UserController();

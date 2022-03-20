@@ -8,7 +8,7 @@ const debugLog: debug.IDebugger = debug("server:auth-routes");
 
 export class AuthRoutes extends CommonRoutesConfig {
 	constructor(app: express.Application) {
-		super(app, "AuthRoutes");
+		super(app, AuthRoutes.name);
 	}
 
 	configureRoutes(): express.Application {
