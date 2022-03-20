@@ -10,7 +10,7 @@ import {
 } from "typeorm";
 import { Image } from "./Image";
 
-@Entity()
+@Entity({ name: "user" })
 export class User extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	userId: number;

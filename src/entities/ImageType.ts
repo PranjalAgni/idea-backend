@@ -4,24 +4,16 @@ import {
 	CreateDateColumn,
 	DeleteDateColumn,
 	Entity,
-	JoinColumn,
-	ManyToOne,
-	OneToOne,
 	PrimaryGeneratedColumn
 } from "typeorm";
-import { ImageType } from "./ImageType";
 
-@Entity({ name: "lu_image" })
-export class Image extends BaseEntity {
+@Entity({ name: "lu_image_type" })
+export class ImageType extends BaseEntity {
 	@PrimaryGeneratedColumn()
-	imageId: number;
+	imageTypeId: number;
 
 	@Column("text")
-	url: string;
-
-	@ManyToOne(() => ImageType)
-	@JoinColumn({ name: "fk_image_type_id" })
-	imageType: ImageType;
+	type: string;
 
 	@CreateDateColumn({ type: "timestamp" })
 	createdAt: Date;
