@@ -6,7 +6,6 @@ import {
 	Entity,
 	JoinColumn,
 	ManyToOne,
-	OneToOne,
 	PrimaryGeneratedColumn
 } from "typeorm";
 import { ImageType } from "./ImageType";
