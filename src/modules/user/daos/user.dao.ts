@@ -2,11 +2,22 @@ import { AuthToken } from "@entities/AuthToken";
 import { Image } from "@entities/Image";
 import { User } from "@entities/User";
 import { UserGithub } from "@entities/UserGithub";
-import { getConnection, getRepository } from "typeorm";
+import { getNamespace } from "cls-hooked";
+import {
+	EntityManager,
+	EntityRepository,
+	getConnection,
+	getRepository
+} from "typeorm";
+import { BaseRepository } from "typeorm-transactional-cls-hooked";
+
+const NAMESPACE_NAME = "__typeOrm___cls_hooked_tx_namespace";
+const TYPE_ORM_KEY_PREFIX = "__typeOrm__transactionalEntityManager_";
 
 // const debugLog: debug.IDebugger = debug("server:user-dao");
 
-class UserDao {
+@EntityRepository(User)
+class UserDao extends BaseRepository<User> {
 	private static instance: UserDao;
 
 	static getInstance(): UserDao {
@@ -16,11 +27,19 @@ class UserDao {
 		return UserDao.instance;
 	}
 
-	async create(user: User) {
-		return await getRepository(User).create(user).save();
+	async createUser(user: User): Promise<User> {
+		const transactionNamespace = getNamespace(NAMESPACE_NAME);
+		// eslint-disable-next-line no-console
+		console.log("Create = ", this.create.toString());
+		const entityManager = transactionNamespace.get(
+			`${TYPE_ORM_KEY_PREFIX}default`
+		) as EntityManager;
+
+		return entityManager.getRepository(User).create(user).save();
+		// const createdUser = this.create(user);
 	}
 
-	async findOne(userId: number) {
+	async findOneById(userId: number) {
 		return await getRepository(User).findOne({
 			userId
 		});

@@ -3,6 +3,10 @@ import userDao from "@user/daos/user.dao";
 import { CreateUserDto, ReadUserDto } from "@user/dtos/user.dto";
 import logger from "@utils/logger";
 import { comparePassword, hashPassword } from "@utils/password";
+import {
+	IsolationLevel,
+	Transactional
+} from "typeorm-transactional-cls-hooked";
 
 class UserService {
 	private static instance: UserService;
@@ -14,10 +18,15 @@ class UserService {
 		return UserService.instance;
 	}
 
-	async create(userData: CreateUserDto): Promise<User> {
+	@Transactional({ isolationLevel: IsolationLevel.SERIALIZABLE })
+	async createUser(userData: CreateUserDto): Promise<User> {
 		const user = userData as User;
+		logger.info(user);
 		user.password = await hashPassword(user.password);
-		return await userDao.create(user);
+		await userDao.createUser(user);
+		user.username = "netflix@chill.com";
+		throw new Error("Please rollback and not store anything please...");
+		return await userDao.createUser(user);
 	}
 
 	async verifyUserPassword(

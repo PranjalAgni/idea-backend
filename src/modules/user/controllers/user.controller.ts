@@ -28,7 +28,7 @@ class UserController {
 	async createUser(req: Request, res: Response, next: NextFunction) {
 		try {
 			const data = req.body as CreateUserDto;
-			const user = await userService.create(data);
+			const user = await userService.createUser(data);
 			debugLog(user);
 			const sessionId = await userService.createUserSession(user);
 			res.setHeader("authorization", sessionId);

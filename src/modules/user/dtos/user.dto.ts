@@ -12,11 +12,11 @@ import {
 
 export const CreateUserStruct = object({
 	username: Email,
-	password: size(string(), 6),
+	password: size(string(), 6, Infinity),
 	firstName: string(),
 	lastName: string(),
 	birthDate: date(),
-	gender: string()
+	gender: size(string(), 1)
 });
 
 export const SigninUserStruct = object({

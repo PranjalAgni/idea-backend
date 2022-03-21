@@ -29,5 +29,9 @@ export default {
 			json: false,
 			colorize: true
 		}
+	},
+	namespace: {
+		transaction: "transaction-namespace",
+		transactionEntityManager: "__typeOrm__transactionalEntityManager"
 	}
 };

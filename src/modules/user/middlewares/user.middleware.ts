@@ -23,6 +23,9 @@ class UserMiddleware {
 		next: express.NextFunction
 	) {
 		try {
+			if (req.body?.birthDate) {
+				req.body.birthDate = new Date(req.body.birthDate);
+			}
 			assert(req.body, CreateUserStruct);
 			return next();
 		} catch (ex) {
