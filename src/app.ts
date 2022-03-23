@@ -9,8 +9,11 @@ import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import { createConnection } from "typeorm";
+import { createNamespace } from "cls-hooked";
+import config from "./config";
 
 const initalizeApp = async (): Promise<express.Application> => {
+	const context = createNamespace(config.namespace.transaction);
 	const app: express.Application = express();
 	const routes: Array<CommonRoutesConfig> = [];
 	const debugLog: debug.IDebugger = debug("server:app");
@@ -36,6 +39,10 @@ const initalizeApp = async (): Promise<express.Application> => {
 			}
 		})
 	);
+
+	app.use((_req, _res, next) => {
+		context.run(() => next());
+	});
 
 	routes.push(new AuthRoutes(app), new UserRoutes(app));
 

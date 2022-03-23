@@ -31,7 +31,7 @@ export default {
 		}
 	},
 	namespace: {
-		transaction: "transaction-namespace",
+		transaction: "__typeOrm___cls_hooked_tx_namespace",
 		transactionEntityManager: "__typeOrm__transactionalEntityManager"
 	}
 };
